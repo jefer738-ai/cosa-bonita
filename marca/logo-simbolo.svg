@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Primera Capa">
+  <defs>
+    <clipPath id="marco">
+      <rect x="12" y="12" width="104" height="104" rx="26"/>
+    </clipPath>
+  </defs>
+  <rect x="12" y="12" width="104" height="104" rx="26" fill="#1C1B1A"/>
+  <g clip-path="url(#marco)">
+    <rect x="42" y="40" width="44" height="6"  rx="3" fill="#E8842B" opacity="0.55"/>
+    <rect x="37" y="54" width="54" height="8"  rx="4" fill="#E8842B" opacity="0.75"/>
+    <rect x="32" y="70" width="64" height="10" rx="5" fill="#E8842B"/>
+    <rect x="12" y="90" width="104" height="26" fill="#E8842B"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Primera Capa">
+  <defs><clipPath id="f"><rect x="2" y="2" width="60" height="60" rx="15"/></clipPath></defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#1C1B1A"/>
+  <g clip-path="url(#f)">
+    <rect x="21" y="19" width="22" height="4" rx="2" fill="#E8842B" opacity="0.6"/>
+    <rect x="18" y="28" width="28" height="5" rx="2.5" fill="#E8842B"/>
+    <rect x="2" y="42" width="60" height="20" fill="#E8842B"/>
+  </g>
+</svg>

@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cosa Bonita — piezas listas, en el color que quieras</title>
+<link rel="icon" href="marca/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --grafito:#1C1B1A; --hueso:#F5F1EA; --terracota:#A8503C; --mostaza:#D9A02B;
+    --piedra:#8A827A; --salvia:#6F7F6A;
+    --fondo:var(--hueso); --sup:#fff; --texto:var(--grafito); --suave:#6b645c; --borde:#e4ddd2;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-tema="claro"]){
+      --fondo:#141312; --sup:#1e1d1b; --texto:var(--hueso); --suave:#a39b91; --borde:#332f2b;
+    }
+  }
+  :root[data-tema="oscuro"]{ --fondo:#141312; --sup:#1e1d1b; --texto:var(--hueso); --suave:#a39b91; --borde:#332f2b; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--texto);
+       font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;}
+  h1,h2,h3{font-family:Outfit,Inter,sans-serif;margin:0;line-height:1.2}
+  .envoltura{max-width:1120px;margin:0 auto;padding:0 16px}
+
+  header{border-bottom:1px solid var(--borde);background:var(--sup);position:sticky;top:0;z-index:9}
+  .barra{display:flex;align-items:center;gap:14px;padding:14px 0}
+  .marca{display:flex;align-items:center;gap:10px;font-family:Outfit;font-weight:700;font-size:19px}
+  .marca img{height:26px;width:auto}
+  .tema{margin-left:auto;background:none;border:1px solid var(--borde);color:var(--suave);
+        border-radius:20px;padding:6px 13px;font-size:13px;cursor:pointer}
+
+  .heroe{padding:40px 0 26px}
+  .heroe h1{font-size:clamp(28px,5vw,42px);letter-spacing:-.5px}
+  .heroe p{color:var(--suave);max-width:60ch;margin:12px 0 0;font-size:17px}
+
+  .filtros{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0 26px}
+  .filtros button{background:var(--sup);border:1px solid var(--borde);color:var(--texto);
+                  border-radius:30px;padding:8px 16px;font-size:14px;cursor:pointer;font-family:inherit}
+  .filtros button[aria-pressed="true"]{background:var(--grafito);color:var(--hueso);border-color:var(--grafito)}
+  @media (prefers-color-scheme: dark){ .filtros button[aria-pressed="true"]{background:var(--hueso);color:var(--grafito)} }
+
+  .rejilla{display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));padding-bottom:40px}
+  .pieza{background:var(--sup);border:1px solid var(--borde);border-radius:16px;overflow:hidden;
+         display:flex;flex-direction:column;transition:transform .15s ease}
+  .pieza:hover{transform:translateY(-3px)}
+  .foto{position:relative;aspect-ratio:4/3;background:#0002;overflow:hidden}
+  .foto img{width:100%;height:100%;object-fit:cover;display:block}
+  .mas{position:absolute;right:9px;bottom:9px;background:#000a;color:#fff;font-size:11px;
+       padding:3px 9px;border-radius:20px;backdrop-filter:blur(4px)}
+  .cuerpo{padding:14px 15px 16px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .cat{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--suave)}
+  .pieza h3{font-size:16px}
+  .precio{font-family:Outfit;font-weight:700;font-size:23px;color:var(--terracota)}
+  .colores{display:flex;align-items:center;gap:5px}
+  .bolita{width:15px;height:15px;border-radius:50%;border:1px solid var(--borde);display:inline-block}
+  .colnom{font-size:12px;color:var(--suave);margin-left:3px}
+  .ficha{font-size:12.5px;color:var(--suave);margin-top:auto}
+  .autor{font-size:11.5px;color:var(--suave)}
+  .autor.pend{opacity:.75;font-style:italic}
+  .autor a{color:var(--suave)}
+  .desc{font-size:13px;color:var(--suave);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+  .aviso{background:#A8503C18;border:1px solid #A8503C55;border-radius:14px;padding:16px 18px;margin:0 0 28px}
+  .aviso h2{font-size:15px;margin-bottom:6px;color:var(--terracota)}
+  .aviso p{margin:0;font-size:14px;color:var(--texto)}
+  .pendientes{border-top:1px solid var(--borde);padding:26px 0 50px;color:var(--suave);font-size:14px}
+  .pendientes h2{font-size:15px;color:var(--texto);margin-bottom:8px}
+  .pendientes ul{margin:6px 0 0;padding-left:20px;columns:2;column-gap:28px}
+  @media (max-width:560px){ .pendientes ul{columns:1} }
+  footer{border-top:1px solid var(--borde);padding:22px 0 40px;color:var(--suave);font-size:13px}
+
+  /* --- la ficha de la pieza --- */
+  .pieza{cursor:pointer}
+  .pieza:focus-visible{outline:2px solid var(--terracota);outline-offset:2px}
+  .ficha-fondo{position:fixed;inset:0;background:#000b;backdrop-filter:blur(3px);
+               display:grid;place-items:center;padding:16px;z-index:40;overflow-y:auto}
+  .ficha-fondo[hidden]{display:none}
+  .ficha-caja{background:var(--sup);border:1px solid var(--borde);border-radius:18px;
+              max-width:900px;width:100%;position:relative;display:grid;
+              grid-template-columns:1.1fr 1fr;overflow:hidden;max-height:92vh}
+  @media (max-width:760px){ .ficha-caja{grid-template-columns:1fr;max-height:94vh;overflow-y:auto} }
+  .cerrar{position:absolute;top:10px;right:12px;z-index:3;background:#0007;color:#fff;border:0;
+          width:34px;height:34px;border-radius:50%;font-size:22px;line-height:1;cursor:pointer}
+  .ficha-fotos{background:#0003;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+  #f-grande{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#0002}
+  .tiras{display:flex;gap:8px;flex-wrap:wrap}
+  .tiras img{width:62px;height:62px;object-fit:cover;border-radius:9px;cursor:pointer;
+             border:2px solid transparent;opacity:.65}
+  .tiras img[aria-current="true"]{border-color:var(--terracota);opacity:1}
+  .ficha-datos{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+  .ficha-datos h2{font-size:24px}
+  .ficha-datos .precio{font-size:30px}
+  .ficha-datos .desc{font-size:14px;color:var(--suave);margin:0;display:block;overflow:visible}
+  .eleccion{display:flex;flex-direction:column;gap:7px}
+  .eleccion label{font-size:12px;letter-spacing:.7px;text-transform:uppercase;color:var(--suave)}
+  .opciones{display:flex;gap:9px}
+  .opcion{display:flex;align-items:center;gap:7px;border:1.5px solid var(--borde);background:none;
+          color:var(--texto);border-radius:30px;padding:7px 14px;cursor:pointer;font:inherit;font-size:14px}
+  .opcion[aria-pressed="true"]{border-color:var(--terracota);background:#A8503C14}
+  .opcion .bolita{width:16px;height:16px}
+  #f-cuantas{width:92px;background:var(--fondo);color:var(--texto);border:1.5px solid var(--borde);
+             border-radius:10px;padding:9px 12px;font:inherit}
+  .pedir{display:block;text-align:center;background:#25D366;color:#06281a;font-weight:600;
+         text-decoration:none;border-radius:12px;padding:14px;margin-top:4px;font-size:16px}
+  .pedir:active{filter:brightness(.93)}
+  .pedir.sin-numero{background:var(--borde);color:var(--suave);pointer-events:none}
+  .letra-chica{font-size:12px;color:var(--suave);margin:0}
+</style></head>
+<body>
+<header><div class="envoltura barra">
+  <span class="marca"><img src="marca/logo-simbolo.svg" alt=""> Cosa Bonita</span>
+  <button class="tema" id="tema">tema</button>
+</div></header>
+
+<main class="envoltura">
+  <section class="heroe">
+    <h1>Piezas listas, en el color que quieras</h1>
+    <p>Impresas una a una en casa. Todas se hacen en <strong>negro, blanco o gris</strong>:
+       dime cuál y te la preparo. Los precios ya incluyen material, máquina y empaque.</p>
+  </section>
+
+  <nav class="filtros" id="filtros">
+    <button data-f="*" aria-pressed="true">Todo (26)</button>
+    <button data-f="Cocina" aria-pressed="false">Cocina</button><button data-f="Decoración" aria-pressed="false">Decoración</button><button data-f="Hogar" aria-pressed="false">Hogar</button><button data-f="Organización" aria-pressed="false">Organización</button><button data-f="Otros" aria-pressed="false">Otros</button><button data-f="Soportes" aria-pressed="false">Soportes</button>
+  </nav>
+
+  <div class="rejilla" id="rejilla">
+    <article class="pieza" data-cat="Organización" data-id="protector-cable-estrella" tabindex="0">
+      <div class="foto">
+        <img src="fotos/protector-cable-estrella.png" alt="Protector Cable Estrella" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Protector Cable Estrella</h3>
+        
+        <div class="precio">$3.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Marieta</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="colgador-bloqueo-automatico" tabindex="0">
+      <div class="foto">
+        <img src="fotos/colgador-bloqueo-automatico.png" alt="Colgador Bloqueo Automatico" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Colgador Bloqueo Automatico</h3>
+        
+        <div class="precio">$4.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="protector-cable-nube" tabindex="0">
+      <div class="foto">
+        <img src="fotos/protector-cable-nube.png" alt="Protector Cable Nube" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Protector Cable Nube</h3>
+        
+        <div class="precio">$4.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Marieta</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Cocina" data-id="exprimidor-de-crema" tabindex="0">
+      <div class="foto">
+        <img src="fotos/exprimidor-de-crema.png" alt="Exprimidor De Crema" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Cocina</div>
+        <h3>Exprimidor De Crema</h3>
+        
+        <div class="precio">$5.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Soportes" data-id="soporte-celular-ondulado" tabindex="0">
+      <div class="foto">
+        <img src="fotos/soporte-celular-ondulado.png" alt="Soporte Celular Ondulado" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Soportes</div>
+        <h3>Soporte Celular Ondulado</h3>
+        
+        <div class="precio">$6.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Soportes" data-id="llavero-3-en-1" tabindex="0">
+      <div class="foto">
+        <img src="fotos/llavero-3-en-1.png" alt="Llavero 3 En 1" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Soportes</div>
+        <h3>Llavero 3 En 1</h3>
+        
+        <div class="precio">$6.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="holder-tarjetero" tabindex="0">
+      <div class="foto">
+        <img src="fotos/holder-tarjetero.png" alt="Holder Tarjetero" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Holder Tarjetero</h3>
+        
+        <div class="precio">$8.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de morething</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="organizador-cable-usb" tabindex="0">
+      <div class="foto">
+        <img src="fotos/organizador-cable-usb.png" alt="Organizador Cable USB" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Organizador Cable USB</h3>
+        
+        <div class="precio">$9.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de FauFrames</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Cocina" data-id="plato-burbujeante" tabindex="0">
+      <div class="foto">
+        <img src="fotos/plato-burbujeante.png" alt="Plato Burbujeante" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Cocina</div>
+        <h3>Plato Burbujeante</h3>
+        
+        <div class="precio">$9.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de LextZip</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Decoración" data-id="bandeja-ovalada" tabindex="0">
+      <div class="foto">
+        <img src="fotos/bandeja-ovalada.png" alt="Bandeja Ovalada" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Decoración</div>
+        <h3>Bandeja Ovalada</h3>
+        
+        <div class="precio">$13.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de The Simple Haus</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Cocina" data-id="porta-esponja" tabindex="0">
+      <div class="foto">
+        <img src="fotos/porta-esponja.png" alt="Porta Esponja" loading="lazy">
+        <div class="mas">2 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Cocina</div>
+        <h3>Porta Esponja</h3>
+        
+        <div class="precio">$14.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Kong 3D</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Decoración" data-id="reno-crochet" tabindex="0">
+      <div class="foto">
+        <img src="fotos/reno-crochet.png" alt="Reno Crochet" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Decoración</div>
+        <h3>Reno Crochet</h3>
+        
+        <div class="precio">$14.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de LetHimPrint</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="portacable-oreo" tabindex="0">
+      <div class="foto">
+        <img src="fotos/portacable-oreo.png" alt="Portacable Oreo" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Portacable Oreo</h3>
+        
+        <div class="precio">$15.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Decoración" data-id="bandeja-japandi" tabindex="0">
+      <div class="foto">
+        <img src="fotos/bandeja-japandi.png" alt="Bandeja Japandi" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Decoración</div>
+        <h3>Bandeja Japandi</h3>
+        
+        <div class="precio">$18.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de SabreDesign</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Otros" data-id="trampa-moscas" tabindex="0">
+      <div class="foto">
+        <img src="fotos/trampa-moscas.png" alt="Trampa Moscas" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Otros</div>
+        <h3>Trampa Moscas</h3>
+        
+        <div class="precio">$19.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de KRAMPLAUZIS</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="caja-pilas-aa" tabindex="0">
+      <div class="foto">
+        <img src="fotos/caja-pilas-aa.png" alt="Caja Pilas AA" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Caja Pilas AA</h3>
+        
+        <div class="precio">$22.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de TheCADKing</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Soportes" data-id="llavero-soporte" tabindex="0">
+      <div class="foto">
+        <img src="fotos/llavero-soporte-2.webp" alt="Llavero soporte de celular" loading="lazy">
+        <div class="mas">2 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Soportes</div>
+        <h3>Llavero soporte de celular</h3>
+        <p class="desc">Un llavero que se abre y se convierte en atril para el celular. Sale de la maquina ya armado, con su bisagra andando, y lleva abrelatas en el canto.</p>
+        <div class="precio">$24.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de <a href="https://makerworld.com" target="_blank" rel="noopener">mgm86 (soporte) · M3x (cadena)</a></div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Cocina" data-id="organizador-tapas" tabindex="0">
+      <div class="foto">
+        <img src="fotos/organizador-tapas.png" alt="Organizador Tapas" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Cocina</div>
+        <h3>Organizador Tapas</h3>
+        
+        <div class="precio">$27.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de NanoStrata</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Otros" data-id="auto-lavador" tabindex="0">
+      <div class="foto">
+        <img src="fotos/auto-lavador.png" alt="Auto Lavador" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Otros</div>
+        <h3>Auto Lavador</h3>
+        
+        <div class="precio">$28.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        
+      </div>
+    </article>
+    <article class="pieza" data-cat="Soportes" data-id="soporte-portatil" tabindex="0">
+      <div class="foto">
+        <img src="fotos/soporte-portatil-2.png" alt="Soporte de portatil" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Soportes</div>
+        <h3>Soporte de portatil</h3>
+        <p class="desc">Dos piezas en forma de onda donde el portatil se queda de pie, de canto. Los valles sirven tambien para la tablet, el celular o un cuaderno.</p>
+        <div class="precio">$37.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de <a href="https://makerworld.com/en/models/3057744-wave-parametric-device-stand-1-4-slots" target="_blank" rel="noopener">jorm</a></div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="organizador-libros" tabindex="0">
+      <div class="foto">
+        <img src="fotos/organizador-libros.png" alt="Organizador Libros" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Organizador Libros</h3>
+        
+        <div class="precio">$38.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Merilno3D</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Decoración" data-id="florero-escandinavo" tabindex="0">
+      <div class="foto">
+        <img src="fotos/florero-escandinavo.png" alt="Florero Escandinavo" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Decoración</div>
+        <h3>Florero Escandinavo</h3>
+        
+        <div class="precio">$40.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de OskarEmde</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Decoración" data-id="maceta-mini-8-6" tabindex="0">
+      <div class="foto">
+        <img src="fotos/maceta-mini-8-6.png" alt="Maceta Mini 8.6" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Decoración</div>
+        <h3>Maceta Mini 8.6</h3>
+        
+        <div class="precio">$41.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Dekora.3D</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Organización" data-id="caja-organizadora" tabindex="0">
+      <div class="foto">
+        <img src="fotos/caja-organizadora.png" alt="Caja Organizadora" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Organización</div>
+        <h3>Caja Organizadora</h3>
+        
+        <div class="precio">$42.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de windko 3D</div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Hogar" data-id="dispensador-huevos" tabindex="0">
+      <div class="foto">
+        <img src="fotos/dispensador-huevos-2.webp" alt="Dispensador de huevos" loading="lazy">
+        <div class="mas">2 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Hogar</div>
+        <h3>Dispensador de huevos</h3>
+        <p class="desc">Dispensador de encimera para 13 huevos. Se cargan por arriba y van rodando solos hasta la boca de abajo, asi siempre sale primero el mas viejo.</p>
+        <div class="precio">$53.500</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de <a href="https://makerworld.com/models/1454966" target="_blank" rel="noopener">Harry (@imlostau)</a></div>
+      </div>
+    </article>
+    <article class="pieza" data-cat="Cocina" data-id="soporte-toallas-cocina" tabindex="0">
+      <div class="foto">
+        <img src="fotos/soporte-toallas-cocina.png" alt="Soporte Toallas Cocina" loading="lazy">
+        <div class="mas">3 fotos</div>
+      </div>
+      <div class="cuerpo">
+        <div class="cat">Cocina</div>
+        <h3>Soporte Toallas Cocina</h3>
+        
+        <div class="precio">$80.000</div>
+        <div class="colores" title="Colores disponibles">
+          <span class="bolita" style="background:#1C1B1A" title="Negro"></span><span class="bolita" style="background:#F5F1EA" title="Blanco"></span><span class="bolita" style="background:#8A827A" title="Gris"></span>
+          <span class="colnom">negro · blanco · gris</span>
+        </div>
+        <div class="autor">Diseño de Kien Designs</div>
+      </div>
+    </article></div>
+</main>
+
+<!-- La ficha: galeria de fotos, eleccion de color y pedido. Se abre al tocar
+     una pieza. Sin esto, las fichas decian "3 fotos" y solo se veia una. -->
+<div id="ficha" class="ficha-fondo" hidden>
+  <div class="ficha-caja" role="dialog" aria-modal="true" aria-labelledby="f-nombre">
+    <button class="cerrar" id="f-cerrar" aria-label="Cerrar">&times;</button>
+    <div class="ficha-fotos">
+      <img id="f-grande" src="" alt="">
+      <div class="tiras" id="f-tiras"></div>
+    </div>
+    <div class="ficha-datos">
+      <div class="cat" id="f-cat"></div>
+      <h2 id="f-nombre"></h2>
+      <p class="desc" id="f-desc"></p>
+      <div class="precio" id="f-precio"></div>
+
+      <div class="eleccion">
+        <label>Color</label>
+        <div class="opciones" id="f-colores"></div>
+      </div>
+
+      <div class="eleccion">
+        <label for="f-cuantas">Cantidad</label>
+        <input type="number" id="f-cuantas" min="1" value="1" inputmode="numeric">
+      </div>
+
+      <a class="pedir" id="f-pedir" href="#" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+      <p class="letra-chica" id="f-autor"></p>
+    </div>
+  </div>
+</div>
+
+<footer><div class="envoltura">
+  Cosa Bonita · De la idea a la pieza, capa por capa.<br>
+  Tiempos y pesos leídos de los archivos de impresión reales. Precios en pesos colombianos.
+</div></footer>
+
+<script>
+  const PIEZAS = [{"id":"protector-cable-estrella","nombre":"Protector Cable Estrella","cat":"Organización","desc":"","precio":3500,"precioTxt":"$3.500","fotos":["fotos/protector-cable-estrella.png","fotos/protector-cable-estrella-2.png","fotos/protector-cable-estrella-3.png"],"autor":"Marieta","autorUrl":null},{"id":"colgador-bloqueo-automatico","nombre":"Colgador Bloqueo Automatico","cat":"Organización","desc":"","precio":4000,"precioTxt":"$4.000","fotos":["fotos/colgador-bloqueo-automatico.png","fotos/colgador-bloqueo-automatico-2.png","fotos/colgador-bloqueo-automatico-3.png"],"autor":null,"autorUrl":null},{"id":"protector-cable-nube","nombre":"Protector Cable Nube","cat":"Organización","desc":"","precio":4000,"precioTxt":"$4.000","fotos":["fotos/protector-cable-nube.png","fotos/protector-cable-nube-2.png","fotos/protector-cable-nube-3.png"],"autor":"Marieta","autorUrl":null},{"id":"exprimidor-de-crema","nombre":"Exprimidor De Crema","cat":"Cocina","desc":"","precio":5000,"precioTxt":"$5.000","fotos":["fotos/exprimidor-de-crema.png","fotos/exprimidor-de-crema-2.webp","fotos/exprimidor-de-crema-3.webp"],"autor":null,"autorUrl":null},{"id":"soporte-celular-ondulado","nombre":"Soporte Celular Ondulado","cat":"Soportes","desc":"","precio":6000,"precioTxt":"$6.000","fotos":["fotos/soporte-celular-ondulado.png","fotos/soporte-celular-ondulado-2.png","fotos/soporte-celular-ondulado-3.png"],"autor":null,"autorUrl":null},{"id":"llavero-3-en-1","nombre":"Llavero 3 En 1","cat":"Soportes","desc":"","precio":6500,"precioTxt":"$6.500","fotos":["fotos/llavero-3-en-1.png","fotos/llavero-3-en-1-2.webp","fotos/llavero-3-en-1-3.png"],"autor":null,"autorUrl":null},{"id":"holder-tarjetero","nombre":"Holder Tarjetero","cat":"Organización","desc":"","precio":8500,"precioTxt":"$8.500","fotos":["fotos/holder-tarjetero.png","fotos/holder-tarjetero-2.webp","fotos/holder-tarjetero-3.webp"],"autor":"morething","autorUrl":null},{"id":"organizador-cable-usb","nombre":"Organizador Cable USB","cat":"Organización","desc":"","precio":9000,"precioTxt":"$9.000","fotos":["fotos/organizador-cable-usb.png","fotos/organizador-cable-usb-2.webp","fotos/organizador-cable-usb-3.webp"],"autor":"FauFrames","autorUrl":null},{"id":"plato-burbujeante","nombre":"Plato Burbujeante","cat":"Cocina","desc":"","precio":9000,"precioTxt":"$9.000","fotos":["fotos/plato-burbujeante.png","fotos/plato-burbujeante-2.webp","fotos/plato-burbujeante-3.webp"],"autor":"LextZip","autorUrl":null},{"id":"bandeja-ovalada","nombre":"Bandeja Ovalada","cat":"Decoración","desc":"","precio":13000,"precioTxt":"$13.000","fotos":["fotos/bandeja-ovalada.png","fotos/bandeja-ovalada-2.png","fotos/bandeja-ovalada-3.webp"],"autor":"The Simple Haus","autorUrl":null},{"id":"porta-esponja","nombre":"Porta Esponja","cat":"Cocina","desc":"","precio":14500,"precioTxt":"$14.500","fotos":["fotos/porta-esponja.png","fotos/porta-esponja-2.webp"],"autor":"Kong 3D","autorUrl":null},{"id":"reno-crochet","nombre":"Reno Crochet","cat":"Decoración","desc":"","precio":14500,"precioTxt":"$14.500","fotos":["fotos/reno-crochet.png","fotos/reno-crochet-2.webp","fotos/reno-crochet-3.webp"],"autor":"LetHimPrint","autorUrl":null},{"id":"portacable-oreo","nombre":"Portacable Oreo","cat":"Organización","desc":"","precio":15000,"precioTxt":"$15.000","fotos":["fotos/portacable-oreo.png","fotos/portacable-oreo-2.webp","fotos/portacable-oreo-3.webp"],"autor":null,"autorUrl":null},{"id":"bandeja-japandi","nombre":"Bandeja Japandi","cat":"Decoración","desc":"","precio":18000,"precioTxt":"$18.000","fotos":["fotos/bandeja-japandi.png","fotos/bandeja-japandi-2.webp","fotos/bandeja-japandi-3.webp"],"autor":"SabreDesign","autorUrl":null},{"id":"trampa-moscas","nombre":"Trampa Moscas","cat":"Otros","desc":"","precio":19500,"precioTxt":"$19.500","fotos":["fotos/trampa-moscas.png","fotos/trampa-moscas-2.png","fotos/trampa-moscas-3.png"],"autor":"KRAMPLAUZIS","autorUrl":null},{"id":"caja-pilas-aa","nombre":"Caja Pilas AA","cat":"Organización","desc":"","precio":22000,"precioTxt":"$22.000","fotos":["fotos/caja-pilas-aa.png","fotos/caja-pilas-aa-2.webp","fotos/caja-pilas-aa-3.webp"],"autor":"TheCADKing","autorUrl":null},{"id":"llavero-soporte","nombre":"Llavero soporte de celular","cat":"Soportes","desc":"Un llavero que se abre y se convierte en atril para el celular. Sale de la maquina ya armado, con su bisagra andando, y lleva abrelatas en el canto.","precio":24000,"precioTxt":"$24.000","fotos":["fotos/llavero-soporte-2.webp","fotos/llavero-soporte.webp"],"autor":"mgm86 (soporte) · M3x (cadena)","autorUrl":"https://makerworld.com"},{"id":"organizador-tapas","nombre":"Organizador Tapas","cat":"Cocina","desc":"","precio":27000,"precioTxt":"$27.000","fotos":["fotos/organizador-tapas.png","fotos/organizador-tapas-2.webp","fotos/organizador-tapas-3.png"],"autor":"NanoStrata","autorUrl":null},{"id":"auto-lavador","nombre":"Auto Lavador","cat":"Otros","desc":"","precio":28000,"precioTxt":"$28.000","fotos":["fotos/auto-lavador.png","fotos/auto-lavador-2.webp","fotos/auto-lavador-3.webp"],"autor":null,"autorUrl":null},{"id":"soporte-portatil","nombre":"Soporte de portatil","cat":"Soportes","desc":"Dos piezas en forma de onda donde el portatil se queda de pie, de canto. Los valles sirven tambien para la tablet, el celular o un cuaderno.","precio":37000,"precioTxt":"$37.000","fotos":["fotos/soporte-portatil-2.png","fotos/soporte-portatil-3.png","fotos/soporte-portatil.png"],"autor":"jorm","autorUrl":"https://makerworld.com/en/models/3057744-wave-parametric-device-stand-1-4-slots"},{"id":"organizador-libros","nombre":"Organizador Libros","cat":"Organización","desc":"","precio":38000,"precioTxt":"$38.000","fotos":["fotos/organizador-libros.png","fotos/organizador-libros-2.webp","fotos/organizador-libros-3.png"],"autor":"Merilno3D","autorUrl":null},{"id":"florero-escandinavo","nombre":"Florero Escandinavo","cat":"Decoración","desc":"","precio":40500,"precioTxt":"$40.500","fotos":["fotos/florero-escandinavo.png","fotos/florero-escandinavo-2.webp","fotos/florero-escandinavo-3.webp"],"autor":"OskarEmde","autorUrl":null},{"id":"maceta-mini-8-6","nombre":"Maceta Mini 8.6","cat":"Decoración","desc":"","precio":41000,"precioTxt":"$41.000","fotos":["fotos/maceta-mini-8-6.png","fotos/maceta-mini-8-6-2.webp","fotos/maceta-mini-8-6-3.webp"],"autor":"Dekora.3D","autorUrl":null},{"id":"caja-organizadora","nombre":"Caja Organizadora","cat":"Organización","desc":"","precio":42000,"precioTxt":"$42.000","fotos":["fotos/caja-organizadora.png","fotos/caja-organizadora-2.png","fotos/caja-organizadora-3.png"],"autor":"windko 3D","autorUrl":null},{"id":"dispensador-huevos","nombre":"Dispensador de huevos","cat":"Hogar","desc":"Dispensador de encimera para 13 huevos. Se cargan por arriba y van rodando solos hasta la boca de abajo, asi siempre sale primero el mas viejo.","precio":53500,"precioTxt":"$53.500","fotos":["fotos/dispensador-huevos-2.webp","fotos/dispensador-huevos.webp"],"autor":"Harry (@imlostau)","autorUrl":"https://makerworld.com/models/1454966"},{"id":"soporte-toallas-cocina","nombre":"Soporte Toallas Cocina","cat":"Cocina","desc":"","precio":80000,"precioTxt":"$80.000","fotos":["fotos/soporte-toallas-cocina.png","fotos/soporte-toallas-cocina-2.png","fotos/soporte-toallas-cocina-3.png"],"autor":"Kien Designs","autorUrl":null}];
+  const COLORES = [{"nombre":"Negro","hex":"#1C1B1A"},{"nombre":"Blanco","hex":"#F5F1EA"},{"nombre":"Gris","hex":"#8A827A"}];
+  const WHATSAPP = "573000034449";
+
+  // --- la ficha ---
+  const $ = (s) => document.querySelector(s);
+  const caja = $('#ficha');
+  let actual = null, color = COLORES[0].nombre;
+
+  function pintarFotos(p, i = 0) {
+    $('#f-grande').src = p.fotos[i];
+    $('#f-grande').alt = p.nombre;
+    $('#f-tiras').innerHTML = p.fotos.map((f, n) =>
+      `<img src="${f}" alt="" aria-current="${n === i}" data-n="${n}">`).join('');
+  }
+  function pintarPedido() {
+    const p = actual; if (!p) return;
+    const n = Math.max(1, +$('#f-cuantas').value || 1);
+    const total = p.precio * n;
+    const a = $('#f-pedir');
+    if (!WHATSAPP) {
+      a.textContent = 'Falta poner tu WhatsApp en sitio/contacto.json';
+      a.classList.add('sin-numero'); a.removeAttribute('href'); return;
+    }
+    a.classList.remove('sin-numero');
+    a.textContent = n > 1 ? `Pedir ${n} por WhatsApp · ${total.toLocaleString('es-CO')}` : 'Pedir por WhatsApp';
+    const texto = `Hola! Quiero ${n > 1 ? n + ' ' : ''}${p.nombre} en color ${color}. ${n > 1 ? 'Son' : 'Vale'} $${total.toLocaleString('es-CO')}.`;
+    a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texto);
+  }
+  function abrir(id) {
+    const p = PIEZAS.find(x => x.id === id); if (!p) return;
+    actual = p; color = COLORES[0].nombre;
+    $('#f-cat').textContent = p.cat;
+    $('#f-nombre').textContent = p.nombre;
+    $('#f-desc').textContent = p.desc;
+    $('#f-desc').style.display = p.desc ? '' : 'none';
+    $('#f-precio').textContent = p.precioTxt;
+    $('#f-cuantas').value = 1;
+    $('#f-autor').innerHTML = p.autor
+      ? 'Diseño de ' + (p.autorUrl ? `<a href="${p.autorUrl}" target="_blank" rel="noopener">${p.autor}</a>` : p.autor) : '';
+    $('#f-colores').innerHTML = COLORES.map((c, i) =>
+      `<button class="opcion" aria-pressed="${i === 0}" data-color="${c.nombre}">
+         <span class="bolita" style="background:${c.hex}"></span>${c.nombre}</button>`).join('');
+    pintarFotos(p, 0);
+    pintarPedido();
+    caja.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrar() { caja.hidden = true; actual = null; document.body.style.overflow = ''; }
+
+  document.getElementById('rejilla').addEventListener('click', (e) => {
+    const p = e.target.closest('.pieza'); if (p) abrir(p.dataset.id);
+  });
+  document.getElementById('rejilla').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const p = e.target.closest('.pieza'); if (p) { e.preventDefault(); abrir(p.dataset.id); }
+  });
+  $('#f-cerrar').onclick = cerrar;
+  caja.addEventListener('click', (e) => { if (e.target === caja) cerrar(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !caja.hidden) cerrar(); });
+  $('#f-tiras').addEventListener('click', (e) => {
+    const img = e.target.closest('img'); if (img && actual) pintarFotos(actual, +img.dataset.n);
+  });
+  $('#f-colores').addEventListener('click', (e) => {
+    const b = e.target.closest('.opcion'); if (!b) return;
+    color = b.dataset.color;
+    for (const o of document.querySelectorAll('#f-colores .opcion')) o.setAttribute('aria-pressed', String(o === b));
+    pintarPedido();
+  });
+  $('#f-cuantas').addEventListener('input', pintarPedido);
+
+  const r = document.documentElement;
+  document.getElementById('tema').onclick = () => {
+    const oscuro = getComputedStyle(r).getPropertyValue('--fondo').trim().startsWith('#14');
+    r.dataset.tema = oscuro ? 'claro' : 'oscuro';
+  };
+  document.getElementById('filtros').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    for (const o of document.querySelectorAll('#filtros button')) o.setAttribute('aria-pressed', String(o === b));
+    const f = b.dataset.f;
+    for (const p of document.querySelectorAll('.pieza'))
+      p.style.display = (f === '*' || p.dataset.cat === f) ? '' : 'none';
+  });
+</script>
+</body></html>
