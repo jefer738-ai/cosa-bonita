@@ -1,0 +1,204 @@
+{
+  "generado": "2026-11-27T04:57:03.626Z",
+  "moneda": "COP",
+  "piezas": [
+    {
+      "id": "portector-cable-ondulado",
+      "nombre": "Rizo",
+      "precio": 3500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "cadena-llavero",
+      "nombre": "Eslabon",
+      "precio": 3500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "protector-cable-estrella",
+      "nombre": "Estrella",
+      "precio": 7000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "colgador-bloqueo-automatico",
+      "nombre": "Muelle",
+      "precio": 7000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "colgador-con-tornillo",
+      "nombre": "Firme",
+      "precio": 7000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "protector-cable-nube",
+      "nombre": "Nube",
+      "precio": 4000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "exprimidor-de-crema",
+      "nombre": "Rodillo",
+      "precio": 5000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "soporte-celular-ondulado",
+      "nombre": "Onda",
+      "precio": 6000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "carreta-cinta-metrica",
+      "nombre": "Vuelta",
+      "precio": 6500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "llavero-3-en-1",
+      "nombre": "Trio",
+      "precio": 6500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "holder-tarjetero",
+      "nombre": "Cartera",
+      "precio": 8500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "organizador-cable-usb",
+      "nombre": "Carrete",
+      "precio": 9000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "plato-burbujeante",
+      "nombre": "Burbujas",
+      "precio": 9000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "bandeja-ovalada",
+      "nombre": "Ovalo",
+      "precio": 13000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "porta-esponja",
+      "nombre": "Escurre",
+      "precio": 14500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "reno-crochet",
+      "nombre": "Reno",
+      "precio": 21500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "portacable-oreo",
+      "nombre": "Galleta",
+      "precio": 15000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "bandeja-japandi",
+      "nombre": "Calma",
+      "precio": 18000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "trampa-moscas",
+      "nombre": "Trampa",
+      "precio": 19500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "caja-pilas-aa",
+      "nombre": "Reserva",
+      "precio": 22000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "llavero-soporte",
+      "nombre": "Bolsillo",
+      "precio": 24000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "organizador-tapas",
+      "nombre": "Abanico",
+      "precio": 27000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "auto-lavador",
+      "nombre": "Remolino",
+      "precio": 28000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "soporte-portatil",
+      "nombre": "Ola",
+      "precio": 37000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "organizador-libros",
+      "nombre": "Lomo",
+      "precio": 38000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "florero-escandinavo",
+      "nombre": "Tallo",
+      "precio": 40500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "maceta-mini-8-6",
+      "nombre": "Brote",
+      "precio": 41000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "caja-organizadora",
+      "nombre": "Casillero",
+      "precio": 42000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "dispensador-huevos",
+      "nombre": "Rodadero",
+      "precio": 53500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "dsipensador-toallas",
+      "nombre": "Dispensa",
+      "precio": 62500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "soporte-toallas-cocina",
+      "nombre": "Rollo",
+      "precio": 80000,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "reposa-cuchara-y-tapa",
+      "nombre": "Reposa Cuchara Y Tapa",
+      "precio": 33500,
+      "licencia": "por-confirmar"
+    },
+    {
+      "id": "estante-de-pared-y-llavero",
+      "nombre": "Estante De Pared Y Llavero",
+      "precio": 39000,
+      "licencia": "por-confirmar"
+    }
+  ]
+}

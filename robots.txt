@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jefer738-ai.github.io/cosa-bonita/sitemap.xml
